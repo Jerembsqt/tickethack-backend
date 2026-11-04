@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const Trip = require('../models/trips')
 var express = require('express');
 var router = express.Router();
@@ -40,5 +41,19 @@ router.get('/search/:departure/:arrival/:date', (req, res) => {
 
 })
 
+=======
+var express = require('express');
+var router = express.Router();
+router.get('/', (req, res) => {
+  const { departure, arrival, date } = req.query;
+
+  res.json({
+    message: 'Recherche de trajets',
+    departure: departure,
+    arrival: arrival,
+    date: date
+  });
+});
+>>>>>>> cd2ed85e67f10761e915c899daa81b81fcb9cf94
 
 module.exports = router;
