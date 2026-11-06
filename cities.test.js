@@ -1,5 +1,16 @@
-// le fichier trips.json (importé dans la base de données) contient 2000 trajets reliant 4 villes : Bruxelles, Lyon, Marseille et Paris
-it('Checking if city exists', () => {
-    const cityName = ['Bruxelles', 'Lyon', 'Marseille', 'Paris'];
-    expect(checkCity(cityName)).toBe('Bruxelles'||'Lyon' || 'Marseille' ||'Paris')
+const {checkCity} = require('./cities');
+
+// trips.json : 2000 trajets reliant seulement 4 villes existantes : Bruxelles, Lyon, Marseille et Paris
+describe('checkCity', () => {
+    it('returns true for an existing city', () => {
+        expect(checkCity('Bruxelles')).toBe(true);
+    });
+
+    it('returns false for unknown city', () => {
+        expect(checkCity('Berlin')).toBe(false)
+    });
+
+    it('case insensitive', () => {
+        expect(checkCity('paris')).toBe(true)
+    })
 })
