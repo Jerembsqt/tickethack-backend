@@ -1,6 +1,7 @@
 const Trip = require('../models/trips')
 var express = require('express');
 var router = express.Router();
+const {dayRange} = require('../modules/dateRange')
 
 // trouver les trajets en fonction du départ
 router.get('/departure/:departure', (req,res) => {
@@ -16,11 +17,9 @@ router.get('/arrival/:arrival', (req,res) => {
     })
 })
 
-// trouver les trajets en fonction de la date au format JJ/MM/AAAA
+// trouver les trajets en fonction de la date au format JJ-MM-AAAA
 router.get('/date/:date', (req, res) => {
-    const [day, month, year] = req.params.date.split('-').map(Number);
-    const start = new Date(Date.UTC(year, month -1, day)); // borne basse, les mois en JS commencent à 0
-    const end = new Date(Date.UTC(year, month-1, day+1)); //borne haute
+    const {start, end} = dayRange(req.params.date);
     Trip.find({date: {$gte: start, $lt: end} }).then(data => {
         res.json({Trips: data})
     })
@@ -29,9 +28,7 @@ router.get('/date/:date', (req, res) => {
 // trouver les trajets en fonction du départ, de l'arrivée et de la date
 router.get('/search/:departure/:arrival/:date', (req, res) => {
     const {departure, arrival, date} = req.params;
-    const [day, month, year] = date.split('-').map(Number);
-    const start = new Date(Date.UTC(year, month -1, day));
-    const end = new Date(Date.UTC(year, month-1, day+1));
+    const {start, end} = dayRange(date);
     Trip.find({
         departure: {$regex: new RegExp(departure, 'i')},
         arrival: {$regex: new RegExp(arrival, 'i')},
