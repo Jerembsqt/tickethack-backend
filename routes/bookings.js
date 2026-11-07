@@ -1,10 +1,27 @@
 var express = require('express');
 var router = express.Router();
 const Booking = require('../models/bookings');
+const Trip = require('../models/trips');
 const Cart = require('../models/cart');
+
 router.get('/', (req, res) => {
     Booking.find().then(data => {
-        res.json({ bookings: data });
+        let bookings = [];
+        let i = 0;
+
+        function getTrips() {
+            if (i < data.length) {
+                Trip.findById(data[i].trip).then(trip => {
+                    bookings.push(trip);
+                    i++;
+                    getTrips();
+                });
+            } else {
+                res.json({ bookings: bookings });
+            }
+        }
+
+        getTrips();
     });
 });
 
