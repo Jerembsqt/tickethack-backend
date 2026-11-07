@@ -27,4 +27,10 @@ newCart.save().then(() => {
     });
 });
 
+router.delete('/:tripId', (req, res) => {
+    Cart.deleteOne({ trip: req.params.tripId }).then(() => {
+        res.json({ message: 'Trajet supprimé du panier' });
+    });
+});
+
 module.exports = router;
