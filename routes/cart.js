@@ -1,20 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-<<<<<<< HEAD
-router.get('/', (req, res) => {
-  res.json({
-    message: 'Affichage du panier'
-  });
-});
-router.post('/', (req, res) => {
-  const { tripId } = req.body;
-
-  res.json({
-    message: 'Trajet ajouté au panier',
-    tripId: tripId
-  });
-=======
 const Trip = require('../models/trips');
 const Cart = require('../models/cart');
 const Booking = require('../models/bookings');
@@ -94,7 +80,6 @@ router.post('/purchase', (req, res) => {
 
         saveBooking();
     });
->>>>>>> brancheMohamed
 });
 
 module.exports = router;
