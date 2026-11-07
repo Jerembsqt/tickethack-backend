@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+
 const Booking = require('../models/bookings');
 const Trip = require('../models/trips');
 const Cart = require('../models/cart');
 
+// Afficher les réservations
 router.get('/', (req, res) => {
     Booking.find().then(data => {
         let bookings = [];
@@ -12,7 +14,10 @@ router.get('/', (req, res) => {
         function getTrips() {
             if (i < data.length) {
                 Trip.findById(data[i].trip).then(trip => {
-                    bookings.push(trip);
+                    bookings.push({
+                        _id: data[i]._id,
+                        trip: trip
+                    });
                     i++;
                     getTrips();
                 });
@@ -25,6 +30,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// Enregistrer les réservations et vider le panier
 router.put('/', (req, res) => {
     Cart.find().then(data => {
         let i = 0;
@@ -40,9 +46,7 @@ router.put('/', (req, res) => {
                     saveBooking();
                 });
             } else {
-
-                Cart.deleteMany({}).then((result) => {
-    
+                Cart.deleteMany({}).then(() => {
                     res.json({ message: 'Réservations enregistrées' });
                 });
             }
